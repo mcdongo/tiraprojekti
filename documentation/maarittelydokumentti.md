@@ -1,8 +1,11 @@
 # Määrittelydokumentti
 
 Sovellus tulee vertailemaan IDA*:n ja Dijkstran algoritmien suorituskykyä ja tehokkuutta navigoidessa katuosoitteiden välillä autoliikenteessä. Tulen hyödyntämään moelemmissa algoritmeissa Pythonin omaa heap-tietorakennetta.
+
 Valitsin Dijkstran ja IDA*:n, koska tunsin jo entuudestaan Dijkstran ja se on suhteellisen simppeli, mutta IDA* vaikuttaa monimutkaisemmalta ja on minulle uusi. Molemmat pyrkivät kuitenkin samaan lopputulokseen. Aikavaativuusoletuksena on O(n+m log m).
-Kartat lataan [OpenStreetMap](https://www.openstreetmap.org/)-palvelusta. Luon oman tulkin, joka lukee karttadataa ja muuttaa tiet verkoiksi. Sovellus vastaanottaa lähtöosoitteen ja halutun päätösosoitteen. 
+
+Kartat lataan [OpenStreetMap](https://www.openstreetmap.org/)-palvelusta. Luon oman tulkin, joka lukee karttadataa ja muuttaa tiet verkoiksi. Sovellus vastaanottaa lähtöosoitteen ja halutun päätösosoitteen.
+ 
 Käytän projektissa Pythonia. Hallitsen pääasiassa vain Pythonia. Opinto-ohjelmani on Tietojenkäsittelytieteen kandidaatti.
 Projektin kielenä tulee toimimaan suomi. Koodi, dokumentaatio ym. tulee kaikki olemaan suomeksi.
 
