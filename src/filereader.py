@@ -1,5 +1,5 @@
 class Reader:
-    def __init__(self, path=""):
+    def __init__(self, path):
         self.path = path
 
     def read(self):
@@ -7,7 +7,7 @@ class Reader:
             with open(self.path, "r") as file:
                 return file.read().splitlines()
         except Exception:
-            raise SystemExit("Invalid filename/path")
+            raise SystemExit("Invalid filename or path")
 
     def parse_data(self):
         self.data = self.read()
