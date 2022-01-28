@@ -1,4 +1,3 @@
-from multiprocessing import Event
 from filereader import Reader
 from renderer import Renderer
 from level import Level
@@ -15,10 +14,11 @@ DIRNAME = os.path.dirname(__file__)
 class Main:
     def __init__(self,name):
         self.load_modules(name)
-        dijkstra_val = self.dijkstra.solve((69,83),(447,420))
+        '''print(self.level.get_coordinate(66,83))
+        dijkstra_val = self.dijkstra.solve((447,420),(104,64))
         print(f"Koordinaateista (y,x) (69,83) koordinaatteihin (447,420) kuluu Dijkstran algoritmin avulla {dijkstra_val} askelta.")
         path_map = self.dijkstra.get_path_map()
-        self.loop.set_dijkstra_path_map(path_map)
+        self.loop.set_dijkstra_path_map(path_map)'''
         self.loop.loop()
 
     def load_reader(self,name):

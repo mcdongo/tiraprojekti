@@ -31,7 +31,7 @@ class Dijkstra:
                 continue
             self._completed[node[0]][node[1]] = True
 
-            for direction in [(-1,0),(1,0),(0,-1),(0,1)]:
+            for direction in [(-1,0),(1,0),(0,-1),(0,1)]: #[(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]: 
                 new_pos = (node[0]+direction[0],node[1]+direction[1])
                 tile = self._map[new_pos[0]][new_pos[1]]
                 if tile == "." or tile == "S":
@@ -41,11 +41,11 @@ class Dijkstra:
                     if new < cur:
                         dist[new_pos[0]][new_pos[1]] = new
                         heappush(heap, (new_pos[0],new_pos[1]))
-                    if self.check_for_completion(new_pos,(goal_y,goal_x)):
-                        heap = None
-                        break
                 else:
                     self._completed[new_pos[0]][new_pos[1]] = True
+                if self.check_for_completion(new_pos,(goal_y,goal_x)):
+                    heap = None
+                    break
 
         return dist[goal_y][goal_x]
 

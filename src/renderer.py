@@ -23,6 +23,7 @@ class Renderer:
         self.right_text_rect.center = (round(width*0.75), height -25)
 
     def render(self):
+        self._display.fill((0,0,0))
         level_map = self._level.get_level_map()
         self._display.fill(COLORS["@"])
         for i in range(len(level_map)):
@@ -31,4 +32,3 @@ class Renderer:
                 self._display.set_at((j+len(level_map[i]),i), COLORS[level_map[i][j]])
         self._display.blit(self.left_text, self.left_text_rect)
         self._display.blit(self.right_text, self.right_text_rect)
-                #pg.draw.line(self._display, (0,0,0), (0, 300), (300,100))
