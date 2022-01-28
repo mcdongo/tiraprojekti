@@ -5,6 +5,7 @@ from level import Level
 from event_queue import EventQueue
 from loop import Loop
 from clock import Clock
+from dijkstra import Dijkstra
 import os
 import pygame as pg
 
@@ -14,6 +15,10 @@ DIRNAME = os.path.dirname(__file__)
 class Main:
     def __init__(self,name):
         self.load_modules(name)
+        dijkstra_val = self.dijkstra.solve((69,83),(447,420))
+        print(f"Koordinaateista (y,x) (69,83) koordinaatteihin (447,420) kuluu Dijkstran algoritmin avulla {dijkstra_val} askelta.")
+        path_map = self.dijkstra.get_path_map()
+        self.loop.set_dijkstra_path_map(path_map)
         self.loop.loop()
 
     def load_reader(self,name):
@@ -21,6 +26,9 @@ class Main:
 
     def get_level_data(self):
         return self.reader.parse_data()
+
+    def solve_dijkstra(self,start,goal):
+        print(self.dijkstra.solve(start,goal))
 
     def load_modules(self,name):
         pg.init()
@@ -31,8 +39,9 @@ class Main:
         self.event_queue = EventQueue()
         self.clock = Clock()
         self.display = pg.display.set_mode((level_data[1],level_data[0]))
-        self.renderer = Renderer(self.display,level_data[2],level_data[1],level_data[0])
+        self.renderer = Renderer(self.display,self.level,level_data[1],level_data[0])
         self.loop = Loop(self.level,self.renderer,self.event_queue,self.clock)
+        self.dijkstra = Dijkstra(self.level.get_level_map())
 
 if __name__ == "__main__":
     '''map_list = os.listdir(os.path.join(DIRNAME,"maps"))

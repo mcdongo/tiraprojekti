@@ -15,4 +15,9 @@ class Reader:
         height = int(self.data.pop(0).split(" ")[1]) + 50
         width = int(self.data.pop(0).split(" ")[1]) * 2
         self.data.pop(0)
+        temp = []
+        for y in range(len(self.data)):
+            temp.append(list(self.data[y]))
+        self.data = temp
+
         return height,width,self.data
