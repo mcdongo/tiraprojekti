@@ -21,7 +21,11 @@ Valitse aloituspiste klikkaamalla vasemmasta "ruudusta" jotain valkoista tai tum
 
 Ensi viikolla aion tehdä runsaasti lisää testejä, parannella visualisointia ja luoda tai ainakin pyrkiä luomaan valmis versio JPS-algoritmista. Lisään myös github-repoon testikattavuusraportin codecovin avulla.
 Ajatuksena oli, että näytölle piirtyy vierekkäin Dijkstran ja JPS:n visualisointi, jotka pyörivät sitten rinta rinnan. Testit pääsee ajamaan komentoriviltä juurihakemistosta:
-    > poetry run invoke test
+
+> poetry run invoke test
+
 Koodin siisteyden tarkastelun pylint-kirjaston avulla saa vuorostaan ajamalla juurihakemistossa:
-    > poetry run invoke lint
+
+> poetry run invoke lint
+
 Aikaa olen käyttänyt tällä viikolla 15 tuntia.
