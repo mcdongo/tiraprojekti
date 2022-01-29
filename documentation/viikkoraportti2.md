@@ -23,7 +23,7 @@ ja tällaisen ikkunan pitäisi avautua:
 ![Sovellusikkuna](/documentation/ikkuna.png)
 Valitse aloituspiste klikkaamalla vasemmasta "ruudusta" jotain valkoista tai tummansinistä pikseliä (nämä ovat pisteitä, joita pitkin voit kulkea). Tämän jälkeen toista lopetuspisteelle ja algoritmi tekee työnsä, jonka jälkeen algoritmin käymät pikselit alkavat piirtyä näytölle. Voit valita uudet koordinaatit vasta, kun vanha on piirtynyt loppuun asti. Kun suljet ohjelman, komentoriville päivittyy lopuksi reittien alku- ja loppukoordinaatit sekä minimiaskelien määrä päästäkseen loppupisteeseen.
 
-Ensi viikolla aion tehdä runsaasti lisää testejä, parannella visualisointia ja luoda tai ainakin pyrkiä luomaan valmis versio JPS-algoritmista. Lisään myös github-repoon testikattavuusraportin codecovin avulla.
+Ensi viikolla aion tehdä runsaasti lisää testejä, parannella visualisointia ja luoda tai ainakin pyrkiä luomaan valmis versio JPS-algoritmista. Lisään myös github-repoon testikattavuusraportin codecovin avulla. Ajattelin myös laittaa jatkuvan integraation käyttöön github actionsin avulla. Jatkuvassa integroinnissa ilmenisi esimerkiksi koodin laatu ja testikattavuus.
 Ajatuksena oli, että näytölle piirtyy vierekkäin Dijkstran ja JPS:n visualisointi, jotka pyörivät sitten rinta rinnan. Testit pääsee ajamaan komentoriviltä juurihakemistosta:
 
 > poetry run invoke test

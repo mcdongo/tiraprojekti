@@ -18,4 +18,4 @@ def lint(ctx):
 
 @task
 def test(ctx):
-    ctx.run("pytest src")
+    ctx.run("pytest ")
