@@ -2,20 +2,63 @@ from heapq import heapify, heappop, heappush
 from math import inf
 
 class Dijkstra:
+    """Luokka, jonka vastuulla on löytää lyhyin reitti
+        tietyistä koordinaateista toisiin Dijkstran algoritmin
+        avulla.
+    
+    attr:
+        _map (List): karttadata matriisiesityksenä
+        _path_map (List): pitää kirjaa KAIKISTA algoritmin tekemistä
+            askelista (tallentaa käytyjen kohteiden koordinaatit (y,x) tuplena)
+    """
     def __init__(self,map):
+        """Metodi, joka toteutetaan kun olio luodaan
+
+        args:
+            map (List): karttadata matriisiesityksenä
+        """
         self._map = map
         self._path_map = []
 
     def set_map(self,map):
+        """Metodi, jolla voi asettaa toisen kartan olion
+            kartaksi.
+        
+        args:
+            map (List): karttadata matriisiesityksenä
+        """
         self._map = map
 
     def get_map(self):
+        """Metodi, joka palauttaa olion nykyisen kartan
+        
+        returns:
+            _map (List): karttadata matriisiesityksenä
+        """
         return self._map
 
     def get_path_map(self):
+        """Metodi, joka palauttaa listan missä on algoritmin tekemät askeleet
+
+        returns:
+            _path_map (List): lista, jossa on kaikki sijainnit missä algoritmi on vieraillut
+                muotoa (y,x) tupleina.
+        """
         return self._path_map
 
     def solve(self,start,end):
+        """Metodi, joka tekee algoritmin ydintoiminnallisuuden,
+            eli etsii lyhimmän reitin alkukoordinaateista loppukoordinaatteihin
+
+        args:
+            start (tuple): 2-alkioinen tuple (y (int), x (int)),
+                missä määritellään reitinhaun alkupiste
+            end (tuple): 2-alkionen tuple (y (int), x (int)),
+                missä määritellään reitinhaun loppupiste
+        returns:
+            dist[goal_y][goal_x] (int): tarvittavien askelien määrä
+                alkukoordinaateista loppukoordinaatteihin
+        """
         start_y,start_x = start
         goal_y,goal_x = end
         heap = []
@@ -50,6 +93,21 @@ class Dijkstra:
         return dist[goal_y][goal_x]
 
     def check_for_completion(self,cur_pos,end):
+        """Metodi, joka tarkistaa onko algoritmi valmis
+        katsomalla onko kaikki loppupisteen ympäröivät
+        koordinaatit jo algoritmin käsittelemiä
+        
+        args:
+            cur_pos (tuple): 2-alkionen tuple (y (int), x (int))
+                mikä kuvaa algoritmin tämänhetkisen tarkastelun alla
+                olevaa sijaintia
+            end (tuple): 2-alkioinen tuple (y (int), x(int))
+                mikä kuvaa loppupistettä mihin reitti halutaan löytää
+        
+        returns:
+            all_completed (boolean): True, jos kaikki ympäröivät "solmut"
+                on käsitelty, False muuten
+        """
         if cur_pos != end:
             return False
         all_completed = True
