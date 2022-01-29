@@ -1,3 +1,4 @@
 # Tiralabra
-- [Määrittelydokumentti](https://github.com/mcdongo/tiraprojekti/blob/master/documentation/maarittelydokumentti.md)
-- [Viikkoraportti 1](https://github.com/mcdongo/tiraprojekti/blob/master/documentation/viikkoraportti1.md)
+- [Määrittelydokumentti](/documentation/maarittelydokumentti.md)
+- [Viikkoraportti 1](/documentation/viikkoraportti1.md)
+- [Viikkoraportti 2](/documentation/viikkoraportti2.md)
