@@ -1,9 +1,10 @@
 class Level:
     """Luokka, joka pitää kirjaa mitä kartan koordinaateista ja datasta.
-    
+
     attr: _level_map (List): matriisiesityksessä oleva karttadata
     """
-    def __init__(self,level_map):
+
+    def __init__(self, level_map):
         """Metodi, joka toteutetaan oliota luodessa.
 
         args:
@@ -13,13 +14,13 @@ class Level:
 
     def get_level_map(self):
         """Metodi, joka palauttaa karttadatan.
-        
+
         returns:
             _level_map (List): matriisiesityksessä oleva karttadata
         """
         return self._level_map
 
-    def get_coordinate(self,y,x):
+    def get_coordinate(self, y, x):
         """Metodi, joka palauttaa tietyn koordinaatin merkin kartasta.
 
         args:
@@ -31,10 +32,10 @@ class Level:
         """
         return self._level_map[y][x]
 
-    def edit_coordinate(self,y,x,value):
+    def edit_coordinate(self, y, x, value):
         """Metodi, joka muokkaa halutuissa koordinaateissa olevaa kohtaa
             halutuksi arvoksi
-        
+
         args:
             y (int): koordinaatti y-akselilla
             x (int): koordinaatti x-akselilla

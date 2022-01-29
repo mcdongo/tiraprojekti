@@ -5,6 +5,7 @@ class Reader:
     attr:
         path (str): string-muuttuja, missä on halutun kartan tiedostosijainti.
     """
+
     def __init__(self, path):
         """Metodi toteutetaan oliota luodessa.
         Luo oliolle oman muuttujan mihin tallentaa tiedostosijainnin.
@@ -38,7 +39,7 @@ class Reader:
             ja tämä metodi ottaa ne talteen. Metodi kutsuu ensin read-metodia,
             joka palauttaa tälle raakadatan. Tämän jälkeen metodi muuttaa raakadatan
             matriisiesityksenä toimivaan listaan.
-        
+
         returns:
             height (int): kartan korkeus pikseleinä.
             width (int): kartan leveys pikseleinä.
@@ -54,4 +55,4 @@ class Reader:
             temp.append(list(self.data[y]))
         self.data = temp
 
-        return height,width,self.data
+        return height, width, self.data
