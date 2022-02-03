@@ -1,21 +1,15 @@
-import unittest
+import unittest, os
 from dijkstra import Dijkstra
+from filereader import Reader
 from math import inf
+
+DIRNAME = os.path.dirname(__file__)
 
 class TestDijkstra(unittest.TestCase):
     def setUp(self):
-        level_map = ["@@@@@@@@@@",
-                     "@...WWW..@",
-                     "@..TW.W..@",
-                     "@T..T....@",
-                     "@.T....TT@",
-                     "@...TT...@",
-                     "@@@@@@@@@@"]
-        temp = []
-        for y in range(len(level_map)):
-            temp.append(list(level_map[y]))
-        level_map = temp
-        self.dijkstra = Dijkstra(level_map)
+        self.reader = Reader(os.path.join(DIRNAME, "maps", "testmap1.map"))
+        level_data = self.reader.parse_data()
+        self.dijkstra = Dijkstra(level_data[2])
 
     def test_minimum_distance1(self):
         distance = self.dijkstra.solve((1,1),(1,8))
