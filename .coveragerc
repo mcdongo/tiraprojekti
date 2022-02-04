@@ -1,0 +1,3 @@
+[run]
+source = src
+omit = src/**/__init__.py,src/tests/**,src/maps/,src/clock.py,src/event_queue.py,src/level.py,src/main.py,src/filereader.py,src/loop.py,src/renderer.py

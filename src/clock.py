@@ -24,6 +24,7 @@ class Clock:
         """Metodi, joka paluttaa kuinka monta kertaa visualisointia on jo päivitetty
 
         returns:
-            pg.time.get_ticks() (int): päivityskertojen lukumäärä siitä hetkestä, kun ohjelma käynnistettiin
+            pg.time.get_ticks() (int): päivityskertojen lukumäärä siitä hetkestä,
+            kun ohjelma käynnistettiin
         """
         return pg.time.get_ticks()

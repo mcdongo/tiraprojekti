@@ -13,23 +13,23 @@ class Dijkstra:
             askelista (tallentaa käytyjen kohteiden koordinaatit (y,x) tuplena)
     """
 
-    def __init__(self, map):
+    def __init__(self, level_map):
         """Metodi, joka toteutetaan kun olio luodaan
 
         args:
             map (List): karttadata matriisiesityksenä
         """
-        self._map = map
+        self._map = level_map
         self._path_map = []
 
-    def set_map(self, map):
+    def set_map(self, level_map):
         """Metodi, jolla voi asettaa toisen kartan olion
             kartaksi.
 
         args:
             map (List): karttadata matriisiesityksenä
         """
-        self._map = map
+        self._map = level_map
 
     def get_map(self):
         """Metodi, joka palauttaa olion nykyisen kartan
@@ -81,7 +81,7 @@ class Dijkstra:
             for direction in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 new_pos = (node[0]+direction[0], node[1]+direction[1])
                 tile = self._map[new_pos[0]][new_pos[1]]
-                if tile == "." or tile == "S":
+                if tile in ('.', 'S'):
                     cur = dist[new_pos[0]][new_pos[1]]
                     new = dist[node[0]][node[1]] + 1
                     self._path_map.append((new_pos[0], new_pos[1]))

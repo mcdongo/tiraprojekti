@@ -19,7 +19,7 @@ class Reader:
         """Metodi, joka lukee kartan raakadatan .map-päätteisestä tiedostosta.
 
         returns:
-            List: kartan raakadata muutettuna listamuotoon (jokainen tiedoston rivi on 
+            List: kartan raakadata muutettuna listamuotoon (jokainen tiedoston rivi on
             yksi listan alkioista).
         raises:
             SystemExit: viestillä "Väärä tiedostonimi tai -sijainti",
@@ -45,14 +45,14 @@ class Reader:
             width (int): kartan leveys pikseleinä.
             self.data (List): kartan data matriisiesityksenä.
         """
-        self.data = self.read()
-        self.data.pop(0)
-        height = int(self.data.pop(0).split(" ")[1]) + 50
-        width = int(self.data.pop(0).split(" ")[1]) * 2
-        self.data.pop(0)
+        data = self.read()
+        data.pop(0)
+        height = int(data.pop(0).split(" ")[1]) + 50
+        width = int(data.pop(0).split(" ")[1]) * 2
+        data.pop(0)
         temp = []
-        for y in range(len(self.data)):
-            temp.append(list(self.data[y]))
-        self.data = temp
+        for _, line in enumerate(data):
+            temp.append(list(line))
+        data = temp
 
-        return height, width, self.data
+        return height, width, data

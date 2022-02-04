@@ -1,3 +1,5 @@
+import os
+import pygame as pg
 from filereader import Reader
 from renderer import Renderer
 from level import Level
@@ -5,19 +7,38 @@ from event_queue import EventQueue
 from loop import Loop
 from clock import Clock
 from dijkstra import Dijkstra
-import os
-import pygame as pg
-
 
 DIRNAME = os.path.dirname(__file__)
 
 
 class Main:
+    """Luokka, joka luo kaikki tarpeelliset oliot, jotta
+    algoritmi ja visualisointi pyörisi.
+
+    attr:
+        reader (Reader): olio, joka vastaa kartan raakadatan
+            lukemisesta ja muuttamisesta matriisiesitykseksi
+        level (Level): olio, joka pitää kirjaa kartan matriisi-
+            esityksestä ja mahdollistaa kartan muuttamisen
+        event_queue (EventQueue): olio, joka vastaanottaa
+            käyttäjän antamat syötteet visualisoinnin aikana
+        clock (Clock): olio, joka vastaa visualisoinnin
+            ajankulusta
+        display (pygame.display): olio, joka vastaa ikkunasta,
+            jolle visualisointi piirtyy
+        renderer (Renderer): olio, joka vastaa siitä, että
+            kaikki piirtyy oikein display-ikkunalle
+        loop (Loop): olio, joka vastaa kaikista olennaisista
+            päivityksistä visualisoinnissa
+        dijkstra (Dijkstra): olio, joka vastaa Dijkstran
+            algoritmin toiminnasta
+    """
     def __init__(self, name):
         self.load_modules(name)
         '''print(self.level.get_coordinate(66,83))
         dijkstra_val = self.dijkstra.solve((447,420),(104,64))
-        print(f"Koordinaateista (y,x) (69,83) koordinaatteihin (447,420) kuluu Dijkstran algoritmin avulla {dijkstra_val} askelta.")
+        print(f"Koordinaateista (y,x) (69,83)
+        koordinaatteihin (447,420) kuluu Dijkstran algoritmin avulla {dijkstra_val} askelta.")
         path_map = self.dijkstra.get_path_map()
         self.loop.set_dijkstra_path_map(path_map)'''
         self.loop.loop()
