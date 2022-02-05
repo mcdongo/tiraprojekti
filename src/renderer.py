@@ -28,29 +28,42 @@ class Renderer:
         """
         self._display = display
         self._level = level
-        self.setup_text(width, height)
+        self.setup_hud(width, height)
 
-    def setup_text(self, width, height):
-        """Metodi, joka luo tarvittavat oliot tekstin piirtymiseen ikkunalle
+    def setup_hud(self, width, height):
+        """Metodi, joka luo tarvittavat oliot tekstin
+            ja nappuloiden piirtymiseen ikkunalle
 
         args:
             width (int): ikkunan leveys
             height (int): ikkunan korkeus
         """
-        font = pg.font.SysFont("Comic Sans MS", 32)
-        self.left_text = font.render(
+        font = pg.font.SysFont("Caladea", 32)
+        button_font = pg.font.SysFont("Caladea", 14)
+        left_text = font.render(
             "Dijkstran algoritmi", True, (255, 255, 255))
-        self.right_text = font.render("JPS", True, (255, 255, 255))
-        self.left_text_rect = self.left_text.get_rect()
-        self.left_text_rect.center = (round(width*0.25), height - 25)
-        self.right_text_rect = self.right_text.get_rect()
-        self.right_text_rect.center = (round(width*0.75), height - 25)
+        right_text = font.render("JPS", True, (255, 255, 255))
+        left_text_rect = left_text.get_rect()
+        left_text_rect.center = (round(width*0.25), height - 25)
+        right_text_rect = right_text.get_rect()
+        right_text_rect.center = (round(width*0.75), height - 25)
+
+        self.button = pg.Surface((105, 20))
+        self.button.fill((200, 0, 0))
+        self.button_text = button_font.render(
+            'Vaihda näkymä', 1, (255, 255, 255))
+        self.button.blit(self.button_text, (5, 0))
+        self.button_rect = self.button.get_rect()
+        self.button_rect.center = (round(width*0.1), height - 75)
+
+        self._hud_list = [(left_text, left_text_rect), (right_text, right_text_rect),
+                          (self.button, self.button_rect)]
 
     def render(self):
         """Metodi, joka piirtää kaiken näytölle.
         Metodi hakee Level-oliolta tuoreimman karttadatan ja piirtää pikseli kerrallaan
         jonkin värin jokaista koordinaattia vastaavaa merkkiä vasten.
-        Lopuksi piirtää tekstit ikkunan alareunaan.
+        Lopuksi piirtää hud-elementit ikkunan alareunaan.
         """
         self._display.fill((0, 0, 0))
         level_map = self._level.get_level_map()
@@ -60,5 +73,38 @@ class Renderer:
                 self._display.set_at((j, i), COLORS[level_map[i][j]])
                 self._display.set_at(
                     (j+len(level_map[i]), i), COLORS[level_map[i][j]])
-        self._display.blit(self.left_text, self.left_text_rect)
-        self._display.blit(self.right_text, self.right_text_rect)
+
+        for hud_object, object_rect in self._hud_list:
+            self._display.blit(hud_object, object_rect)
+
+    def check_for_highlight(self, mouse_pos):
+        """Metodi, joka tarkistaa onko hiiri nappulan
+            sisäpuolella
+        args:
+            mouse_pos (tuple): 2-alkioinen tuple, hiiren
+                koordinaatit (x (int), y (int))
+        returns:
+            True mikäli ehto täyttyy
+            False muuten
+        """
+        if (mouse_pos[0] > self.button_rect.left and
+            mouse_pos[0] < self.button_rect.right and
+            mouse_pos[1] > self.button_rect.top and
+            mouse_pos[1] < self.button_rect.bottom):
+            return True
+        return False
+
+    def highlight_button(self, mouse_pos):
+        """Metodi, joka vaihtaa nappulan väriä
+            mikäli check_for_highlight palauttaa
+            True
+        args:
+            mouse_pos (tuple): 2-alkioinen tuple,
+                hiiren koordinaatit (x (int), y (int))
+        """
+        if self.check_for_highlight(mouse_pos):
+            self.button.fill((255, 0, 0))
+        else:
+            self.button.fill((200, 0, 0))
+
+        self.button.blit(self.button_text, (5, 0))

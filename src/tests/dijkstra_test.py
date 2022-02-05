@@ -1,9 +1,11 @@
-import unittest, os
+import unittest
+import os
 from dijkstra import Dijkstra
 from filereader import Reader
 from math import inf
 
 DIRNAME = os.path.dirname(__file__)
+
 
 class TestDijkstra(unittest.TestCase):
     def setUp(self):
@@ -12,21 +14,36 @@ class TestDijkstra(unittest.TestCase):
         self.dijkstra = Dijkstra(level_data[2])
 
     def test_minimum_distance1(self):
-        distance = self.dijkstra.solve((1,1),(1,8))
+        distance = self.dijkstra.solve((1, 1), (1, 8))
 
-        self.assertEqual(distance,13)
+        self.assertEqual(distance, 13)
 
     def test_minimum_distance2(self):
-        distance = self.dijkstra.solve((1,8),(5,1))
+        distance = self.dijkstra.solve((1, 8), (5, 1))
 
-        self.assertEqual(distance,11)
-    
+        self.assertEqual(distance, 11)
+
     def test_minimum_distance3(self):
-        distance = self.dijkstra.solve((5,8),(1,8))
+        distance = self.dijkstra.solve((5, 8), (1, 8))
 
-        self.assertEqual(distance,8)
+        self.assertEqual(distance, 8)
 
     def test_distance_not_working_with_wrong_coordinates(self):
-        distance = self.dijkstra.solve((1,1),(1,4))
-        
+        distance = self.dijkstra.solve((1, 1), (1, 4))
+
         self.assertEqual(distance, inf)
+
+    def test_working_path1(self):
+        self.dijkstra.solve((1, 1), (1, 3))
+        path = self.dijkstra.gather_shortest_path((1, 1), (1, 3))
+        shortest_path = [(1, 1), (1, 2), (1, 3)]
+
+        self.assertEqual(shortest_path, path)
+
+    def test_working_path2(self):
+        self.dijkstra.solve((5, 8), (5, 1))
+        path = self.dijkstra.gather_shortest_path((5, 8), (5, 1))
+        shortest_path = [(5, 8), (5, 7), (5, 6), (4, 6), (4, 5),
+                         (4, 4), (4, 3), (5, 3), (5, 2), (5, 1)]
+
+        self.assertEqual(path, shortest_path)

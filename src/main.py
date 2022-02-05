@@ -33,6 +33,7 @@ class Main:
         dijkstra (Dijkstra): olio, joka vastaa Dijkstran
             algoritmin toiminnasta
     """
+
     def __init__(self, name):
         self.load_modules(name)
         '''print(self.level.get_coordinate(66,83))
@@ -57,7 +58,7 @@ class Main:
         pg.font.init()
         self.load_reader(name)
         level_data = self.get_level_data()
-        self.level = Level(level_data[2])
+        self.level = Level(level_data[2], self.reader)
         self.event_queue = EventQueue()
         self.clock = Clock()
         self.display = pg.display.set_mode((level_data[1], level_data[0]))

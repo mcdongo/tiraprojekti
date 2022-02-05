@@ -1,5 +1,4 @@
 import pygame as pg
-from random import randint
 from dijkstra import Dijkstra
 
 
@@ -41,6 +40,7 @@ class Loop:
         self.pos_index = 0
         self.dijkstra = Dijkstra(self._level.get_level_map())
         self._dijkstra_path_map = []
+        self._show_shortest_path = True
 
     def _handle_events(self):
         """Metodi, joka ottaa vastaan käyttäjän syötteet
@@ -49,7 +49,27 @@ class Loop:
             if event.type == pg.QUIT:
                 return False
             if event.type == pg.MOUSEBUTTONDOWN:
-                self._get_mouse_coordinates()
+                if self._renderer.check_for_highlight(pg.mouse.get_pos()):
+                    self._switch_shown_path()
+                else:
+                    self._get_mouse_coordinates()
+
+    def _switch_shown_path(self):
+        """Metodi, joka vaihtaa näytetäänkö lyhin reitti
+            vai algoritmin kaikki läpikäyneet koordinaatit
+            piirrettäväksi
+        """
+        if not self.pos_list[0] or not self.pos_list[1]:
+            return
+        self._level.reset_map()
+        if self._show_shortest_path:
+            self.set_dijkstra_path_map(self.dijkstra.get_path_map())
+            self._show_shortest_path = False
+        else:
+            self.set_dijkstra_path_map(self.dijkstra.gather_shortest_path(
+                self.pos_list[0], self.pos_list[1]
+            ))
+            self._show_shortest_path = True
 
     def _get_mouse_coordinates(self):
         """Metodi, joka tallentaa halutut koordinaatit
@@ -58,12 +78,31 @@ class Loop:
             self.pos_list[self.pos_index] = (
                 pg.mouse.get_pos()[1], pg.mouse.get_pos()[0])
             if self.pos_index == 1:
-                print(
-                    f"Koordinaateista {self.pos_list[0]} -> {self.pos_list[1]} menee Dijkstran algoritmilla ", end="")
-                print(self.dijkstra.solve(
-                    self.pos_list[0], self.pos_list[1]), "askelta.")
-                self.set_dijkstra_path_map(self.dijkstra.get_path_map())
+                tile_1 = self._level.get_coordinate(self.pos_list[0][0], self.pos_list[0][1])
+                tile_2 = self._level.get_coordinate(self.pos_list[1][0], self.pos_list[1][1])
+                if tile_1 in ('.', 'S') and tile_2 in ('.', 'S'):
+                    self._start_dijkstra()
+                else:
+                    self.pos_list = [(), ()]
+                    self.pos_index = 0
+                    return
+
             self.pos_index = abs(self.pos_index-1)
+
+    def _start_dijkstra(self):
+        """Metodi, joka ensin nollaa kartan
+        """
+        self._level.reset_map()
+        self.dijkstra.set_map(self._level.get_level_map())
+        print(
+            f"Koordinaateista {self.pos_list[0]} -> {self.pos_list[1]} menee Dijkstran algoritmilla ", end="")
+        print(self.dijkstra.solve(
+            self.pos_list[0], self.pos_list[1]), "askelta.")
+        # self.set_dijkstra_path_map(self.dijkstra.get_path_map())
+        self.set_dijkstra_path_map(self.dijkstra.gather_shortest_path(
+            self.pos_list[0], self.pos_list[1]
+        ))
+        self._show_shortest_path = True
 
     def _render(self):
         """Metodi, joka kutsuu Renderer-oliota piirtämään ikkunaan
@@ -93,7 +132,12 @@ class Loop:
         """Metodi, joka päivittää Level-olion karttadataa algoritmin käymän polun
         tietojen perusteella.
         """
-        for i in range(1000):
+        if not self._show_shortest_path:
+            rate = 1000
+        else:
+            rate = 10
+
+        for i in range(rate):
             new_spot = self._exhaust_dijkstra_path()
             if new_spot:
                 self._level.edit_coordinate(new_spot[0], new_spot[1], "O")
@@ -106,6 +150,7 @@ class Loop:
         while True:
             if self._handle_events() is False:
                 break
+            self._renderer.highlight_button(pg.mouse.get_pos())
             # if self._dijkstra_path_map == []:
             #    print(pg.mouse.get_pos())
             self._show_dijkstra_progress()

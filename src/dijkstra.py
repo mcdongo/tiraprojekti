@@ -1,4 +1,3 @@
-from heapq import heappop, heappush
 from math import inf
 
 
@@ -50,7 +49,10 @@ class Dijkstra:
 
     def solve(self, start, end):
         """Metodi, joka tekee algoritmin ydintoiminnallisuuden,
-            eli etsii lyhimmän reitin alkukoordinaateista loppukoordinaatteihin
+            eli etsii lyhimmän reitin alkukoordinaateista loppukoordinaatteihin.
+            Algoritmi on ahne, eli pahimmassa mahdollisessa tilanteessa
+            se käsittelee koko kartan ennen kuin se on löytänyt lyhyimmän
+            reitin alkupisteestä loppupisteeseen.
 
         args:
             start (tuple): 2-alkioinen tuple (y (int), x (int)),
@@ -61,24 +63,29 @@ class Dijkstra:
             dist[goal_y][goal_x] (int): tarvittavien askelien määrä
                 alkukoordinaateista loppukoordinaatteihin
         """
+        self._path_map = []
         start_y, start_x = start
         goal_y, goal_x = end
-        heap = []
+        queue = []
         dist = [[inf]*len(self._map[0]) for _ in range(len(self._map))]
+        # [[0]*len(self._map[0]) for _ in range(len(self._map))]
+        self.parent = {}
         dist[start_y][start_x] = 0
-        self._completed = [[False]*len(self._map[0])
-                           for _ in range(len(self._map))]
+        self._completed = {}
+        #[[False]*len(self._map[0]) for _ in range(len(self._map))]
 
-        heappush(heap, (start_y, start_x))
+        queue.append((start_y, start_x))
 
-        while heap:
-            node = heappop(heap)
-            if self._completed[node[0]][node[1]]:
+        while queue:
+            node = queue.pop(0)
+            # self._completed[node[0]][node[1]]:
+            if (node[0], node[1]) in self._completed:
                 continue
-            self._completed[node[0]][node[1]] = True
+            #self._completed[node[0]][node[1]] = True
+            self._completed[(node[0], node[1])] = True
 
             # [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
-            for direction in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            for direction in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
                 new_pos = (node[0]+direction[0], node[1]+direction[1])
                 tile = self._map[new_pos[0]][new_pos[1]]
                 if tile in ('.', 'S'):
@@ -87,11 +94,11 @@ class Dijkstra:
                     self._path_map.append((new_pos[0], new_pos[1]))
                     if new < cur:
                         dist[new_pos[0]][new_pos[1]] = new
-                        heappush(heap, (new_pos[0], new_pos[1]))
-                else:
-                    self._completed[new_pos[0]][new_pos[1]] = True
+                        self.parent[(new_pos[0], new_pos[1])] = (
+                            node[0], node[1])
+                        queue.append((new_pos[0], new_pos[1]))
                 if self.check_for_completion(new_pos, (goal_y, goal_x)):
-                    heap = None
+                    queue = None
                     break
 
         return dist[goal_y][goal_x]
@@ -117,7 +124,36 @@ class Dijkstra:
         all_completed = True
         for direction in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             new_pos = (cur_pos[0]+direction[0], cur_pos[1]+direction[1])
-            if self._completed[new_pos[0]][new_pos[1]]:
+            # self._completed[new_pos[0]][new_pos[1]]:
+            if (new_pos[0], new_pos[1]) in self._completed:
                 continue
             all_completed = False
         return all_completed
+
+    def gather_shortest_path(self, start, end):
+        """Metodi, joka kerää lyhimmän reitin listaan
+        alkupisteestä loppupisteeseen.
+
+        args:
+            start (tuple): 2-alkioinen tuple (y (int), x (int))
+                mikä kuvaa alkupistettä
+            end (tuple): 2-alkioinen tuple (y (int), x (int))
+                mikä kuvaa loppupistettä
+        returns:
+            path (list): lista 2-alkoisia tupleja (y (int), x (int))
+                mikä kuvaa jokaista solmua lyhimmällä polulla
+        """
+        path = []
+
+        queue = []
+        queue.append(self.parent[(end[0], end[1])])  # [end[0]][end[1]])
+        path.append((end[0], end[1]))
+        while queue:
+            node = queue.pop(0)
+            path.append(node)
+            if node == start:
+                break
+            queue.append(self.parent[(node[0], node[1])])
+
+        path.reverse()
+        return path
