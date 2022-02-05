@@ -54,7 +54,7 @@ class Renderer:
             'Vaihda näkymä', 1, (255, 255, 255))
         self.button.blit(self.button_text, (5, 0))
         self.button_rect = self.button.get_rect()
-        self.button_rect.center = (round(width*0.1), height - 75)
+        self.button_rect.center = (round(width*0.07), height - 45)
 
         self._hud_list = [(left_text, left_text_rect), (right_text, right_text_rect),
                           (self.button, self.button_rect)]
