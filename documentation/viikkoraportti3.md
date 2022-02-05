@@ -1,0 +1,8 @@
+# Viikkoraportti 3
+Tämä viikko alkoi tuskailulla miksi Dijkstran algoritmi ei toiminut oikein. Kun algoritmia testasi, se toimi niin kuin pitääkin jos loppupiste oli oikealla puolella alkupistettä, mutta jos loppupiste oli alkupisteen vasemmalla puolella, algoritmi teki hyvinkin epämääräisi kiekuroita. Tämä lisäsi kokonaispituutta "lyhyimmässä" reitissä huomattavasti. Tämä ongelma aiheutti paljon päänvaivaa ja vei liian monta tuntia aikaa, kunnes päätin kokeilla heittää heap-tietorakenteen menemään ja käyttää listaa sen sijasta. Tämä korjasi algoritmin toiminnan. Ilmeisesti heap-tietorakenne ei sovellu tällaiseen pikselikarttaan, kun kaikki tieto heap-rakenteeseen tallennettiin tupleina. Oman veikkauksen mukaan se ei oikein ymmärtänyt mikä alkio sieltä keosta olisi milloinkin pitänyt noukkia. 
+
+Epäilemättä tietorakenteen muutos hidastaa algoritmin toimintaa (Dijkstra on muutenkin ahne), mutta en keksinyt miten saisin sen tehtyä keolla. Tämän lisäksi tein Dijkstran algoritmiin myös toiminnallisuuden, jonka avulla voi tallentaa sen lyhyimmän reitin (aikaisemmin se tallensi vain askelten määrän haluttuun pisteeseen). Lisäsin myös käyttöliittymään mahdollisuuden vaihtaa, mitä tarkastellaan (lyhyin polku vai algoritmin kaikki käydyt koordinaatit).
+Lisäsin myös pari testiä, jotka tarkistavat juuri tämän lyhyimmän polun toimintaa. Lisäsin myös github-repoon CI:n, joka mm. tarkistaa, ettei koodin laatu ole liian heikkoa. Testikattavuus on lisätty README.md-tiedostoon Codecovin avulla.
+
+Seuraavalla viikolla olisi viimein määrä työstää JPS kuntoon ja erotella vihdoin visualisoinnin ruudut toisistaan, että niissä näkyisi kummankin algoritmin polut rinta rinnan.
+Aikaa olen käyttänyt 12h.
