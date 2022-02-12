@@ -7,6 +7,7 @@ from event_queue import EventQueue
 from loop import Loop
 from clock import Clock
 from dijkstra import Dijkstra
+from jps import JPS
 
 DIRNAME = os.path.dirname(__file__)
 
@@ -54,19 +55,21 @@ class Main:
         print(self.dijkstra.solve(start, goal))
 
     def load_modules(self, name):
+        print()
         pg.init()
         pg.font.init()
         self.load_reader(name)
         level_data = self.get_level_data()
-        self.level = Level(level_data[2], self.reader)
+        self.dijkstra_level = Level(self.reader)
+        self.jps_level = Level(self.reader)
         self.event_queue = EventQueue()
         self.clock = Clock()
         self.display = pg.display.set_mode((level_data[1], level_data[0]))
         self.renderer = Renderer(
-            self.display, self.level, level_data[1], level_data[0])
-        self.loop = Loop(self.level, self.renderer,
-                         self.event_queue, self.clock)
-        self.dijkstra = Dijkstra(self.level.get_level_map())
+            self.display, self.dijkstra_level, self.jps_level, level_data[1], level_data[0])
+        self.loop = Loop(self.dijkstra_level, self.jps_level,
+                         self.renderer, self.event_queue, self.clock)
+        #self.dijkstra = Dijkstra(self.level.get_level_map())
 
 
 if __name__ == "__main__":

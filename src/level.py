@@ -4,14 +4,15 @@ class Level:
     attr: _level_map (List): matriisiesityksessä oleva karttadata
     """
 
-    def __init__(self, level_map, reader):
+    def __init__(self, reader):
         """Metodi, joka toteutetaan oliota luodessa.
 
         args:
             level_map (List): matriisiesityksessä oleva karttadata
         """
-        self._level_map = level_map
+        self._level_map = None
         self._reader = reader
+        self.reset_map()
 
     def get_level_map(self):
         """Metodi, joka palauttaa karttadatan.

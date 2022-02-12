@@ -17,7 +17,7 @@ class Renderer:
 
     """
 
-    def __init__(self, display, level, width, height):
+    def __init__(self, display, dijkstra_level, jps_level, width, height):
         """Metodi, joka toteutetaan, kun olio luodaan
 
         args:
@@ -27,7 +27,8 @@ class Renderer:
             height (int): ikkunan korkeus
         """
         self._display = display
-        self._level = level
+        self._dijkstra_level = dijkstra_level
+        self._jps_level = jps_level
         self.setup_hud(width, height)
 
     def setup_hud(self, width, height):
@@ -66,13 +67,14 @@ class Renderer:
         Lopuksi piirtää hud-elementit ikkunan alareunaan.
         """
         self._display.fill((0, 0, 0))
-        level_map = self._level.get_level_map()
+        dijkstra_level_map = self._dijkstra_level.get_level_map()
+        jps_level_map = self._jps_level.get_level_map()
         self._display.fill(COLORS["@"])
-        for i in range(len(level_map)):
-            for j in range(len(level_map[i])):
-                self._display.set_at((j, i), COLORS[level_map[i][j]])
+        for i in range(len(dijkstra_level_map)):
+            for j in range(len(dijkstra_level_map[i])):
+                self._display.set_at((j, i), COLORS[dijkstra_level_map[i][j]])
                 self._display.set_at(
-                    (j+len(level_map[i]), i), COLORS[level_map[i][j]])
+                    (j+len(jps_level_map[i]), i), COLORS[jps_level_map[i][j]])
 
         for hud_object, object_rect in self._hud_list:
             self._display.blit(hud_object, object_rect)
