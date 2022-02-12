@@ -1,5 +1,5 @@
-from math import inf
-
+from math import inf, sqrt
+from heapq import heappush, heappop
 
 class Dijkstra:
     """Luokka, jonka vastuulla on löytää lyhyin reitti
@@ -66,7 +66,7 @@ class Dijkstra:
         self._path_map = []
         start_y, start_x = start
         goal_y, goal_x = end
-        queue = []
+        heap = []
         dist = [[inf]*len(self._map[0]) for _ in range(len(self._map))]
         # [[0]*len(self._map[0]) for _ in range(len(self._map))]
         self.parent = {}
@@ -74,31 +74,31 @@ class Dijkstra:
         self._completed = {}
         #[[False]*len(self._map[0]) for _ in range(len(self._map))]
 
-        queue.append((start_y, start_x))
+        heappush(heap, (0, start_y, start_x))
 
-        while queue:
-            node = queue.pop(0)
+        while heap:
+            node = heappop(heap)
             # self._completed[node[0]][node[1]]:
-            if (node[0], node[1]) in self._completed:
+            if (node[1], node[2]) in self._completed:
                 continue
             #self._completed[node[0]][node[1]] = True
-            self._completed[(node[0], node[1])] = True
+            self._completed[(node[1], node[2])] = True
 
             # [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
-            for direction in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
-                new_pos = (node[0]+direction[0], node[1]+direction[1])
+            for direction in [(-1, -1),(-1, 0),(-1, 1),(0, -1),(0, 1),(1, -1),(1, 0),(1, 1)]:
+                new_pos = (node[1]+direction[0], node[2]+direction[1])
                 tile = self._map[new_pos[0]][new_pos[1]]
                 if tile in ('.', 'S'):
                     cur = dist[new_pos[0]][new_pos[1]]
-                    new = dist[node[0]][node[1]] + 1
+                    new = dist[node[1]][node[2]] + sqrt(((new_pos[0]-node[1])**2)+((new_pos[1]-node[2])**2))
                     self._path_map.append((new_pos[0], new_pos[1]))
                     if new < cur:
                         dist[new_pos[0]][new_pos[1]] = new
                         self.parent[(new_pos[0], new_pos[1])] = (
-                            node[0], node[1])
-                        queue.append((new_pos[0], new_pos[1]))
+                            node[1], node[2])
+                        heappush(heap, (new, new_pos[0], new_pos[1]))
                 if self.check_for_completion(new_pos, (goal_y, goal_x)):
-                    queue = None
+                    heap = None
                     break
 
         return dist[goal_y][goal_x]
@@ -122,7 +122,7 @@ class Dijkstra:
         if cur_pos != end:
             return False
         all_completed = True
-        for direction in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        for direction in [(-1, -1),(-1, 0),(-1, 1),(0, -1),(0, 1),(1, -1),(1, 0),(1, 1)]:
             new_pos = (cur_pos[0]+direction[0], cur_pos[1]+direction[1])
             # self._completed[new_pos[0]][new_pos[1]]:
             if (new_pos[0], new_pos[1]) in self._completed:

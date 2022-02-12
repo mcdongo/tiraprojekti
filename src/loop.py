@@ -1,3 +1,4 @@
+from time import time
 import pygame as pg
 from dijkstra import Dijkstra
 
@@ -94,10 +95,13 @@ class Loop:
         """
         self._level.reset_map()
         self.dijkstra.set_map(self._level.get_level_map())
+        start = time()
         print(
-            f"Koordinaateista {self.pos_list[0]} -> {self.pos_list[1]} menee Dijkstran algoritmilla ", end="")
+            f"Koordinaattien {self.pos_list[0]} -> {self.pos_list[1]} välinen etäisyys on Dijkstran algoritmin mukaan ", end="")
         print(self.dijkstra.solve(
-            self.pos_list[0], self.pos_list[1]), "askelta.")
+            self.pos_list[0], self.pos_list[1]))
+        end = time()
+        print(f"Dijkstran suoritukseen kului {end-start}s")
         # self.set_dijkstra_path_map(self.dijkstra.get_path_map())
         self.set_dijkstra_path_map(self.dijkstra.gather_shortest_path(
             self.pos_list[0], self.pos_list[1]
