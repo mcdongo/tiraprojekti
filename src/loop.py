@@ -8,7 +8,8 @@ class Loop:
     """Luokka, joka vastaa kaikesta sovelluslogiikasta visualisoinnin aikana
 
     attr:
-        _level (Level): olio, jolla on tuorein karttadata
+        _dijkstra_level (Level): olio, jolla on Dijkstran algoritmin tuorein karttadata
+        _jps_level (Level): olio, jolla on JPS-algoritmin tuorein karttadata
         _renderer (Renderer): olio, joka vastaa näytölle piirtämisestä
         _event_queue (EventQueue): olio, joka vastaanottaa käyttäjän
             syötteet sovelluksen käytön aikana (hiiren klikkaukset)
@@ -95,8 +96,10 @@ class Loop:
             self.pos_list[self.pos_index] = (
                 pg.mouse.get_pos()[1], pg.mouse.get_pos()[0])
             if self.pos_index == 1:
-                tile_1 = self._dijkstra_level.get_coordinate(self.pos_list[0][0], self.pos_list[0][1])
-                tile_2 = self._dijkstra_level.get_coordinate(self.pos_list[1][0], self.pos_list[1][1])
+                tile_1 = self._dijkstra_level.get_coordinate(
+                    self.pos_list[0][0], self.pos_list[0][1])
+                tile_2 = self._dijkstra_level.get_coordinate(
+                    self.pos_list[1][0], self.pos_list[1][1])
                 if tile_1 in ('.', 'S') and tile_2 in ('.', 'S'):
                     print("DIJKSTRA:")
                     self._start_dijkstra()
@@ -117,12 +120,14 @@ class Loop:
         self._jps_level.reset_map()
         self.jps.set_map(self._jps_level.get_level_map())
         start = time()
-        print(f"koordinaattien {self.pos_list[0]} -> {self.pos_list[1]} välinen etäisyys on algoritmin mukaan ", end="")
+        print(
+            f"koordinaattien {self.pos_list[0]} -> {self.pos_list[1]} välinen etäisyys on algoritmin mukaan ", end="")
         print(self.jps.solve(
             self.pos_list[0], self.pos_list[1]
         ))
         end = time()
-        print(f"Algoritmi kävi läpi {len(set(self.jps.get_path_map()))} koordinaattia")
+        print(
+            f"Algoritmi kävi läpi {len(set(self.jps.get_path_map()))} koordinaattia")
         print(f"JPS-algoritmin suoritukseen kului {end-start}s")
         self.set_jps_path_map(self.jps.gather_shortest_path(
             self.pos_list[0], self.pos_list[1]
@@ -140,9 +145,9 @@ class Loop:
         print(self.dijkstra.solve(
             self.pos_list[0], self.pos_list[1]))
         end = time()
-        print(f"Algoritmi kävi läpi {len(set(self.dijkstra.get_path_map()))} koordinaattia")
+        print(
+            f"Algoritmi kävi läpi {len(set(self.dijkstra.get_path_map()))} koordinaattia")
         print(f"Dijkstran suoritukseen kului {end-start}s")
-        # self.set_dijkstra_path_map(self.dijkstra.get_path_map())
         self.set_dijkstra_path_map(self.dijkstra.gather_shortest_path(
             self.pos_list[0], self.pos_list[1]
         ))
@@ -179,10 +184,10 @@ class Loop:
         """
         if len(self._dijkstra_path_map) > 0:
             return self._dijkstra_path_map.pop(0)
-    
+
     def _exhaust_jps_path(self):
         """Metodi, joka ottaa JPS-algoritmin polusta seuraavan alkion ja palauttaa sen
-        
+
         returns:
             __jps_path_map.pop(0) (Tuple): 2-alkioinen tuple (y (int), x (int))
                 mikäli listassa on vielä alkioita, muuten None
@@ -202,7 +207,8 @@ class Loop:
         for i in range(rate):
             new_spot = self._exhaust_dijkstra_path()
             if new_spot:
-                self._dijkstra_level.edit_coordinate(new_spot[0], new_spot[1], "O")
+                self._dijkstra_level.edit_coordinate(
+                    new_spot[0], new_spot[1], "O")
             new_spot = self._exhaust_jps_path()
             if new_spot:
                 self._jps_level.edit_coordinate(new_spot[0], new_spot[1], "O")
@@ -216,8 +222,6 @@ class Loop:
             if self._handle_events() is False:
                 break
             self._renderer.highlight_button(pg.mouse.get_pos())
-            # if self._dijkstra_path_map == []:
-            #    print(pg.mouse.get_pos())
             self._show_path_progress()
             self._render()
             self._clock.tick(60)

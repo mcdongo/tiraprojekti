@@ -16,6 +16,8 @@ Huom! Tällöin täytyy olla virtuaaliympäristössä, johon pääsee ajamalla j
 
 > poetry shell
 
+Suosittelen ohjelman ajamista näin, sillä tällä tavalla saat reaaliajassa komentoriville tietoja algoritmien toiminnasta.
+
 Avattua sovelluksen tällaisen ikkunan pitäisi avautua:
 ![Sovellusikkuna](/documentation/ikkuna.png)
 Valitse aloituspiste klikkaamalla vasemmasta "ruudusta" jotain valkoista tai tummansinistä pikseliä (nämä ovat pisteitä, joita pitkin voit kulkea). Tämän jälkeen toista lopetuspisteelle ja algoritmi tekee työnsä, jonka jälkeen algoritmin käymät pikselit alkavat piirtyä näytölle. Voit valita uudet koordinaatit vasta, kun vanha on piirtynyt loppuun asti. Kun suljet ohjelman, komentoriville päivittyy lopuksi reittien alku- ja loppukoordinaatit sekä minimiaskelien määrä päästäkseen loppupisteeseen. Vasemmassa alareunassa on nappula, joka vaihtaa haluttua tarkastelua lyhimmän reitin ja algoritmin kokonaan käyneen polun välillä.

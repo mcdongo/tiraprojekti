@@ -1,6 +1,7 @@
 from math import inf, sqrt
 from heapq import heappush, heappop
 
+
 class Dijkstra:
     """Luokka, jonka vastuulla on löytää lyhyin reitti
         tietyistä koordinaateista toisiin Dijkstran algoritmin
@@ -64,44 +65,40 @@ class Dijkstra:
                 alkukoordinaateista loppukoordinaatteihin
         """
         self._path_map = []
-        start_y, start_x = start
-        goal_y, goal_x = end
         heap = []
-        dist = [[inf]*len(self._map[0]) for _ in range(len(self._map))]
-        # [[0]*len(self._map[0]) for _ in range(len(self._map))]
+        dist = {}
         self.parent = {}
-        dist[start_y][start_x] = 0
+        dist[start] = 0
         self._completed = {}
-        #[[False]*len(self._map[0]) for _ in range(len(self._map))]
 
-        heappush(heap, (0, start_y, start_x))
+        heappush(heap, (0, start))
 
         while heap:
-            node = heappop(heap)
-            # self._completed[node[0]][node[1]]:
-            if (node[1], node[2]) in self._completed:
+            node = heappop(heap)[1]
+            if node in self._completed:
                 continue
-            #self._completed[node[0]][node[1]] = True
-            self._completed[(node[1], node[2])] = True
+            self._completed[node] = True
 
-            # [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
-            for direction in [(-1, -1),(-1, 0),(-1, 1),(0, -1),(0, 1),(1, -1),(1, 0),(1, 1)]:
-                new_pos = (node[1]+direction[0], node[2]+direction[1])
+            for direction in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
+                new_pos = (node[0]+direction[0], node[1]+direction[1])
                 tile = self._map[new_pos[0]][new_pos[1]]
                 if tile in ('.', 'S'):
-                    cur = dist[new_pos[0]][new_pos[1]]
-                    new = dist[node[1]][node[2]] + sqrt(((new_pos[0]-node[1])**2)+((new_pos[1]-node[2])**2))
-                    self._path_map.append((new_pos[0], new_pos[1]))
+                    if new_pos not in dist:
+                        dist[new_pos] = inf
+                    cur = dist[new_pos]
+                    new = dist[node] + \
+                        sqrt(((new_pos[0]-node[0])**2) +
+                             ((new_pos[1]-node[1])**2))
+                    self._path_map.append(new_pos)
                     if new < cur:
-                        dist[new_pos[0]][new_pos[1]] = new
-                        self.parent[(new_pos[0], new_pos[1])] = (
-                            node[1], node[2])
-                        heappush(heap, (new, new_pos[0], new_pos[1]))
-                if self.check_for_completion(new_pos, (goal_y, goal_x)):
+                        dist[new_pos] = new
+                        self.parent[new_pos] = (node)
+                        heappush(heap, (new, new_pos))
+                if self.check_for_completion(new_pos, end):
                     heap = None
                     break
 
-        return dist[goal_y][goal_x]
+        return dist[end] if end in dist else inf
 
     def check_for_completion(self, cur_pos, end):
         """Metodi, joka tarkistaa onko algoritmi valmis
@@ -122,10 +119,9 @@ class Dijkstra:
         if cur_pos != end:
             return False
         all_completed = True
-        for direction in [(-1, -1),(-1, 0),(-1, 1),(0, -1),(0, 1),(1, -1),(1, 0),(1, 1)]:
+        for direction in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
             new_pos = (cur_pos[0]+direction[0], cur_pos[1]+direction[1])
-            # self._completed[new_pos[0]][new_pos[1]]:
-            if (new_pos[0], new_pos[1]) in self._completed:
+            if new_pos in self._completed:
                 continue
             all_completed = False
         return all_completed

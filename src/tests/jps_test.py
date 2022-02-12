@@ -6,6 +6,7 @@ from filereader import Reader
 
 DIRNAME = os.path.dirname(__file__)
 
+
 class TestJps(unittest.TestCase):
     def setUp(self):
         self.reader = Reader(os.path.join(DIRNAME, "maps", "testmap1.map"))

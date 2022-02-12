@@ -13,7 +13,8 @@ class Renderer:
 
     attr:
         _display (pygame.display): olio, joka vastaa ikkunasta mille piirretään
-        _level (Level): level-olio, missä on tuorein karttadata
+        _dijkstra_level (Level): level-olio, missä on Dijkstran algoritmin tuorein karttadata
+        _jps_level (Level): level-olio, missä on JPS-algoritmin tuorein karttadata
 
     """
 
@@ -22,7 +23,8 @@ class Renderer:
 
         args:
             display (pygame.display): olio, joka vastaa ikkunasta mille piirretään
-            level (Level): level-olio, missä on tuoren karttadata
+            dijkstra_level (Level): level-olio, missä on Dijkstran algoritmin tuoren karttadata
+            jps_level (Level): level-olio, missä on JPS-algoritmin tuorein karttadata
             width (int): ikkunan leveys
             height (int): ikkunan korkeus
         """
@@ -92,7 +94,7 @@ class Renderer:
         if (mouse_pos[0] > self.button_rect.left and
             mouse_pos[0] < self.button_rect.right and
             mouse_pos[1] > self.button_rect.top and
-            mouse_pos[1] < self.button_rect.bottom):
+                mouse_pos[1] < self.button_rect.bottom):
             return True
         return False
 

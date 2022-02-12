@@ -13,7 +13,6 @@ class TestDijkstra(unittest.TestCase):
         level_data = self.reader.parse_data()
         self.dijkstra = Dijkstra(level_data[2])
 
-
     def test_minimum_distance1(self):
         distance = round(self.dijkstra.solve((1, 1), (1, 8)), 4)
 

@@ -9,6 +9,7 @@ class Level:
 
         args:
             level_map (List): matriisiesityksessä oleva karttadata
+            reader (Reader): olio, jolla luetaan karttadata .map-tiedostosta
         """
         self._level_map = None
         self._reader = reader
@@ -23,6 +24,9 @@ class Level:
         return self._level_map
 
     def reset_map(self):
+        """Metodi, joka kutsuu reader-oliota antamaan karttadatan uudestaan
+        ja asettaa sen olion kartaksi.
+        """
         self._level_map = self._reader.parse_data()[2]
 
     def get_coordinate(self, y, x):
