@@ -9,3 +9,4 @@
 - [Viikkoraportti 2](/documentation/viikkoraportti2.md)
 - [Viikkoraportti 3](/documentation/viikkoraportti3.md)
 - [Viikkoraportti 4](/documentation/viikkoraportti4.md)
+- [Viikkoraportti 5](/documentation/viikkoraportti5.md)

@@ -57,7 +57,7 @@ class Loop:
         for event in self._event_queue.get():
             if event.type == pg.QUIT:
                 return False
-            if event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 if self._renderer.check_for_highlight(pg.mouse.get_pos()):
                     self._switch_shown_path()
                 else:
