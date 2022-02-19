@@ -100,7 +100,7 @@ class Loop:
                     self.pos_list[0][0], self.pos_list[0][1])
                 tile_2 = self._dijkstra_level.get_coordinate(
                     self.pos_list[1][0], self.pos_list[1][1])
-                if tile_1 in ('.', 'S') and tile_2 in ('.', 'S'):
+                if tile_1 in ('.', 'S', 'O') and tile_2 in ('.', 'S', 'O'):
                     print("DIJKSTRA:")
                     self._start_dijkstra()
                     print("\nJPS:")
@@ -200,7 +200,7 @@ class Loop:
         tietojen perusteella.
         """
         if not self._show_shortest_path:
-            rate = 1000
+            rate = 500
         else:
             rate = 10
 

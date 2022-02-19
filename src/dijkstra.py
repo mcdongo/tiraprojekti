@@ -1,8 +1,8 @@
-from math import inf, sqrt
-from heapq import heappush, heappop
+from math import inf
+from algorithm_base import PriorityQueue, Algorithm
 
 
-class Dijkstra:
+class Dijkstra(Algorithm):
     """Luokka, jonka vastuulla on löytää lyhyin reitti
         tietyistä koordinaateista toisiin Dijkstran algoritmin
         avulla.
@@ -19,34 +19,7 @@ class Dijkstra:
         args:
             map (List): karttadata matriisiesityksenä
         """
-        self._map = level_map
-        self._path_map = []
-
-    def set_map(self, level_map):
-        """Metodi, jolla voi asettaa toisen kartan olion
-            kartaksi.
-
-        args:
-            map (List): karttadata matriisiesityksenä
-        """
-        self._map = level_map
-
-    def get_map(self):
-        """Metodi, joka palauttaa olion nykyisen kartan
-
-        returns:
-            _map (List): karttadata matriisiesityksenä
-        """
-        return self._map
-
-    def get_path_map(self):
-        """Metodi, joka palauttaa listan missä on algoritmin tekemät askeleet
-
-        returns:
-            _path_map (List): lista, jossa on kaikki sijainnit missä algoritmi on vieraillut
-                muotoa (y,x) tupleina.
-        """
-        return self._path_map
+        super().__init__(level_map)
 
     def solve(self, start, end):
         """Metodi, joka tekee algoritmin ydintoiminnallisuuden,
@@ -65,16 +38,17 @@ class Dijkstra:
                 alkukoordinaateista loppukoordinaatteihin
         """
         self._path_map = []
-        heap = []
+        queue = PriorityQueue()
         dist = {}
         self.parent = {}
+        self.parent[start] = None
         dist[start] = 0
         self._completed = {}
 
-        heappush(heap, (0, start))
+        queue.insert(start, 0)
 
-        while heap:
-            node = heappop(heap)[1]
+        while not queue.is_empty():
+            node = queue.get_next()
             if node in self._completed:
                 continue
             self._completed[node] = True
@@ -87,15 +61,14 @@ class Dijkstra:
                         dist[new_pos] = inf
                     cur = dist[new_pos]
                     new = dist[node] + \
-                        sqrt(((new_pos[0]-node[0])**2) +
-                             ((new_pos[1]-node[1])**2))
+                        self.h(node, new_pos)
                     self._path_map.append(new_pos)
                     if new < cur:
                         dist[new_pos] = new
                         self.parent[new_pos] = (node)
-                        heappush(heap, (new, new_pos))
+                        queue.insert(new_pos, new)
                 if self.check_for_completion(new_pos, end):
-                    heap = None
+                    queue.empty_queue()
                     break
 
         return dist[end] if end in dist else inf
@@ -125,31 +98,3 @@ class Dijkstra:
                 continue
             all_completed = False
         return all_completed
-
-    def gather_shortest_path(self, start, end):
-        """Metodi, joka kerää lyhimmän reitin listaan
-        alkupisteestä loppupisteeseen.
-
-        args:
-            start (tuple): 2-alkioinen tuple (y (int), x (int))
-                mikä kuvaa alkupistettä
-            end (tuple): 2-alkioinen tuple (y (int), x (int))
-                mikä kuvaa loppupistettä
-        returns:
-            path (list): lista 2-alkoisia tupleja (y (int), x (int))
-                mikä kuvaa jokaista solmua lyhimmällä polulla
-        """
-        path = []
-
-        queue = []
-        queue.append(self.parent[(end[0], end[1])])  # [end[0]][end[1]])
-        path.append((end[0], end[1]))
-        while queue:
-            node = queue.pop(0)
-            path.append(node)
-            if node == start:
-                break
-            queue.append(self.parent[(node[0], node[1])])
-
-        path.reverse()
-        return path
